@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
 
-//                mAdapter.notifyDataSetChanged(); THIS LINE CAUSES AN EXCEPTION
+                mAdapter.notifyDataSetChanged();
             }
         });
     }

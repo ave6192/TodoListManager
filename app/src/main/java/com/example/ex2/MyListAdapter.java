@@ -41,6 +41,8 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         // create a new view
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_layout, parent, false);
+//        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+//                .inflate(R.layout.testing_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
