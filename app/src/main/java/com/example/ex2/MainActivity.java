@@ -1,6 +1,8 @@
 package com.example.ex2;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private int i = 1;
 
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+//    private RecyclerView mRecyclerView;
+//    private RecyclerView.Adapter mAdapter;
+//    private RecyclerView.LayoutManager mLayoutManager;
 
 
     @Override
@@ -43,31 +46,24 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        //
 
 
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-//      recycle view list ------------------------------------------------------------
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+// Set other dialog properties
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-//        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new MyListAdapter(todo_list);
-        mRecyclerView.setAdapter(mAdapter);
-//      recycle view list ------------------------------------------------------------
 
 
         this.adapter = new myAdapter(this, android.R.layout.simple_list_item_1, todo_list);
         this.listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
+
+        editText = (EditText)findViewById(R.id.edit_Text);
 
 //        editText = (EditText) findViewById(R.id.editText);
 
@@ -75,14 +71,40 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//              String message = String.valueOf(editText.getText());
-                String message = "Item "+(i++);
-//                editText.setText("");
-                todo_list.add(message);
-                adapter.notifyDataSetChanged();
+//              String message = String.valueOf(editText.getText());)
+                String message = editText.getText().toString();
+                if(message.length() > 0)
+                {
+                    todo_list.add(message);
+                    adapter.notifyDataSetChanged();
+                    editText.setText("");
+                }
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           final int pos, long id) {
+                String item = listView.getItemAtPosition(pos).toString();
+
+                // Add the buttons
+                builder.setPositiveButton("Delete Item", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        todo_list.remove(pos);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+                // 2. Chain together various setter methods to set the dialog characteristics
+                builder.setMessage("Would you like to delete the selected item?").setTitle(item);
+
+                // 3. Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
 
-                mAdapter.notifyDataSetChanged();
+                return true;
             }
         });
     }
@@ -108,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
     class myAdapter<T> extends ArrayAdapter<T> {
