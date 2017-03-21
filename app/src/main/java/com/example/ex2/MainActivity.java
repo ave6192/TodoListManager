@@ -80,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
 //                editText.setText("");
                 todo_list.add(message);
                 adapter.notifyDataSetChanged();
-//                mAdapter.notifyDataSetChanged();
+
+
+//                mAdapter.notifyDataSetChanged(); THIS LINE CAUSES AN EXCEPTION
             }
         });
     }
