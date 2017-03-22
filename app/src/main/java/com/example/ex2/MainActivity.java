@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private int i = 1;
 
 
-//    private RecyclerView mRecyclerView;
-//    private RecyclerView.Adapter mAdapter;
-//    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
+    private MyListAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
 
     @Override
@@ -58,6 +58,21 @@ public class MainActivity extends AppCompatActivity {
 // Set other dialog properties
 
 
+
+        //-------------------------------------------------------------------------------
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView = (RecyclerView)findViewById(R.id.my_recycle_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new MyListAdapter(todo_list);
+        mRecyclerView.setAdapter(mAdapter);
+        //-------------------------------------------------------------------------------
 
         this.adapter = new myAdapter(this, android.R.layout.simple_list_item_1, todo_list);
         this.listView = (ListView) findViewById(R.id.list_view);
@@ -93,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         todo_list.remove(pos);
                         adapter.notifyDataSetChanged();
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -102,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
 
                 return true;
             }
