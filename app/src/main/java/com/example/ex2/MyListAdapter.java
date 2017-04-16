@@ -1,5 +1,6 @@
 package com.example.ex2;
 
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -30,14 +32,17 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         public TextView mTextView;
         public CheckBox mCheckBox;
         public CardView mCardView;
+        public RelativeLayout layout;
 
         public ViewHolder(View v) {
             super(v);
             mTextView = (TextView)v.findViewById(R.id.textView);
             mCheckBox = (CheckBox)v.findViewById(R.id.checkBox);
             mCardView = (CardView)v.findViewById(R.id.cardView);
+            layout = (RelativeLayout)v.findViewById(R.id.inner_layout);
         }
     }
+
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MyListAdapter(List<String> myDataset) {
@@ -59,10 +64,15 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position));
+        if (position % 2 == 0) {
+            holder.layout.setBackgroundColor(Color.argb(150, 250, 67, 67));
+        } else {
+            holder.layout.setBackgroundColor(Color.argb(150, 82, 116, 250));
+        }
 
     }
 
