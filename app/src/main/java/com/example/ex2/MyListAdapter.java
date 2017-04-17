@@ -1,8 +1,10 @@
 package com.example.ex2;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +24,18 @@ import java.util.List;
 
 
 public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder> {
-    private List<String> mDataset;
+    static List<String> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         // each data item is just a string in this case
+        public Context context;
+        public RelativeLayout layout;
         public TextView mTextView;
         public CheckBox mCheckBox;
         public CardView mCardView;
-        public RelativeLayout layout;
 
         public ViewHolder(View v) {
             super(v);
@@ -40,6 +43,15 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             mCheckBox = (CheckBox)v.findViewById(R.id.checkBox);
             mCardView = (CardView)v.findViewById(R.id.cardView);
             layout = (RelativeLayout)v.findViewById(R.id.inner_layout);
+            context = v.getContext();
+
+            v.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("What would you like to do?");
+            menu.add(0, v.getId(), getAdapterPosition(), "remove");
         }
     }
 
@@ -74,6 +86,15 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             holder.layout.setBackgroundColor(Color.argb(150, 82, 116, 250));
         }
 
+    }
+
+    String get(int position) {
+        return mDataset.get(position);
+    }
+    void remove(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+//        notifyItemRangeChanged(position, mDataset.size());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

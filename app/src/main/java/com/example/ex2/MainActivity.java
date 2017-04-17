@@ -3,9 +3,13 @@ package com.example.ex2;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +28,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,6 +134,23 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int position = item.getOrder();
+        String title = MyListAdapter.mDataset.get(position);
+        remove(position);
+        return super.onContextItemSelected(item);
+    }
+
+    private void remove(int position) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+//        RemoveDialog removeDialog = new RemoveDialog();
+        Bundle args = new Bundle();
+        args.putInt("position", position);
+        args.putString("todo", mAdapter.get(position));
+        mAdapter.remove(position);
     }
 
     @Override
