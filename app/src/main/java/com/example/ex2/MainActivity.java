@@ -3,9 +3,13 @@ package com.example.ex2;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +28,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         mAdapter = new MyListAdapter(todo_list);
         mRecyclerView.setAdapter(mAdapter);
+
         //-------------------------------------------------------------------------------
 
         this.adapter = new myAdapter(this, android.R.layout.simple_list_item_1, todo_list);
@@ -123,6 +129,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        int position = item.getOrder();
+//        remove(position);
+//        return super.onContextItemSelected(item);
+//
+//
+//    }
+//    private void remove(final int position) {
+//        String item = MyListAdapter.mDataset.get(position);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                // User cancelled the dialog
+//            }
+//        });
+//        builder.setPositiveButton("Delete Item", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                todo_list.remove(position);
+//                adapter.notifyDataSetChanged();
+//                mAdapter.notifyDataSetChanged();
+//            }
+//        });
+//
+//        // 2. Chain together various setter methods to set the dialog characteristics
+//        builder.setMessage("Would you like to delete the selected item?").setTitle(item);
+//
+//        // 3. Get the AlertDialog from create()
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//
+//    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
