@@ -54,6 +54,7 @@ public class MyDialog extends DialogFragment {
         final AlertDialog myDialog = builder.create();
 
         return myDialog;
+        //
 
     }
 }
