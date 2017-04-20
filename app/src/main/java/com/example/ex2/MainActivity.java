@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         //-------------------------------------------------------------------------------
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
+
         mRecyclerView = (RecyclerView)findViewById(R.id.my_recycle_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //              String message = String.valueOf(editText.getText());)
+
                 String message = editText.getText().toString();
                 if(message.length() > 0)
                 {
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     editText.setText("");
                 }
+
             }
         });
 
@@ -138,9 +141,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
         int position = item.getOrder();
         String title = MyListAdapter.mDataset.get(position);
-        remove(position);
+        if(item.getTitle().toString().toLowerCase().equals("call")) {
+            String contact = title.substring(4).trim();
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + contact));
+            startActivity(intent);
+
+        }
+        if(item.getTitle().toString().toLowerCase().equals("remove")) {
+            remove(position);
+        }
         return super.onContextItemSelected(item);
     }
 

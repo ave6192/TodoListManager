@@ -50,8 +50,24 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("What would you like to do?");
+//            menu.setHeaderTitle("");
+            String item = mDataset.get(getAdapterPosition());
+            String [] item_arr = item.split(" ");
+
+            if(isCall(item_arr))
+                menu.add(0, v.getId(), getAdapterPosition(), "call");
             menu.add(0, v.getId(), getAdapterPosition(), "remove");
+        }
+
+        private boolean isCall(String[] arr)
+        {
+            if(arr.length > 1 && isNumeric(arr[1]) && arr[0].toLowerCase().equals("call"))
+                return true;
+            return false;
+        }
+        private boolean isNumeric(String s) {
+            boolean isNum = s.matches("[-+]?\\d*\\.?\\d+");
+            return isNum;
         }
     }
 
