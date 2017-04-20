@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private int i = 1;
 
 
-    private RecyclerView mRecyclerView;
-    private MyListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    public RecyclerView mRecyclerView;
+    public MyListAdapter mAdapter;
+    public RecyclerView.LayoutManager mLayoutManager;
 
 
     @Override
@@ -91,8 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+                createMyDialog();
 //              String message = String.valueOf(editText.getText());)
 
                 String message = editText.getText().toString();
@@ -240,6 +243,11 @@ public class MainActivity extends AppCompatActivity {
 
             return view;
         }
+    }
+    private void createMyDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        MyDialog insert_dialog= new MyDialog();
+        insert_dialog.show(fragmentManager, "insert_dialog");
     }
 }
 

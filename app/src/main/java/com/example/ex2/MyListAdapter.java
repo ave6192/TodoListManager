@@ -104,6 +104,12 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
 
     }
 
+    public void add(String text)
+    {
+        mDataset.add(text);
+        notifyDataSetChanged();
+    }
+
     String get(int position) {
         return mDataset.get(position);
     }
