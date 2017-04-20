@@ -21,18 +21,18 @@
 
     <EditText
         android:id="@+id/insert_date"
-        android:layout_width="213dp"
-        android:layout_height="52dp"
+        android:layout_width="126dp"
+        android:layout_height="56dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:hint="insert date DD/MM/YY"
+        android:hint="insert date"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.335"
+        app:layout_constraintHorizontal_bias="0.214"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/insert_text"
-        app:layout_constraintVertical_bias="0.019" />
+        app:layout_constraintVertical_bias="0.042" />
 
 </android.support.constraint.ConstraintLayout>

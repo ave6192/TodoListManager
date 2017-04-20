@@ -1,23 +1,14 @@
 package com.example.ex2;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Aviv on 20/04/2017.
@@ -49,7 +40,8 @@ public class MyDialog extends DialogFragment {
                 MainActivity main_act = ((MainActivity) getActivity());
                 String todo = insert_Text.getText().toString();
                 String date = insert_Date.getText().toString();
-                main_act.mAdapter.add(todo+ "\n\n"+date);
+                if(todo.length() > 0)
+                    main_act.mAdapter.add(todo+ " \n\n"+date);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
