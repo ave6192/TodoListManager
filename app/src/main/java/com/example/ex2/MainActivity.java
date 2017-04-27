@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,14 +31,17 @@ public class MainActivity extends AppCompatActivity {
     public MyListAdapter mAdapter;
     public RecyclerView.LayoutManager mLayoutManager;
 
+    FeedReaderDbHelper mDbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
+
+
 
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -47,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         //-------------------------------------------------------------------------------
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
+
+        mDbHelper = new FeedReaderDbHelper(this);
+        ArrayList<String> array_list = mDbHelper.getDbText();
+
 
         mRecyclerView = (RecyclerView)findViewById(R.id.my_recycle_view);
         mRecyclerView.setHasFixedSize(true);
@@ -61,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyListAdapter(todo_list);
+        mAdapter = new MyListAdapter(array_list);
+//        mAdapter = new MyListAdapter(todo_list);
         mRecyclerView.setAdapter(mAdapter);
 
         //-------------------------------------------------------------------------------
@@ -77,41 +85,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-//
-//    @Override
-//    public boolean onContextItemSelected(MenuItem item) {
-//        int position = item.getOrder();
-//        remove(position);
-//        return super.onContextItemSelected(item);
-//
-//
-//    }
-//    private void remove(final int position) {
-//        String item = MyListAdapter.mDataset.get(position);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                // User cancelled the dialog
-//            }
-//        });
-//        builder.setPositiveButton("Delete Item", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                todo_list.remove(position);
-//                adapter.notifyDataSetChanged();
-//                mAdapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        // 2. Chain together various setter methods to set the dialog characteristics
-//        builder.setMessage("Would you like to delete the selected item?").setTitle(item);
-//
-//        // 3. Get the AlertDialog from create()
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//
-//    }
 
 
     @Override
@@ -140,6 +113,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void remove(int position) {
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ArrayList<Item> array_list = mDbHelper.getDbValues();
+
+        Item t = array_list.get(position);
+        mDbHelper.delete(Integer.parseInt(t.getId()));
         FragmentManager fragmentManager = getSupportFragmentManager();
 //        RemoveDialog removeDialog = new RemoveDialog();
         Bundle args = new Bundle();
@@ -167,9 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
     class myAdapter<T> extends ArrayAdapter<T> {
 
-        float textSize = 0;
-        int unit = 0;
-
         myAdapter(Context context, int resource, List<T> objects) {
             super(context, resource, objects);
         }
@@ -191,6 +167,13 @@ public class MainActivity extends AppCompatActivity {
         MyDialog insert_dialog= new MyDialog();
         insert_dialog.show(fragmentManager, "insert_dialog");
     }
+
+    @Override
+    protected void onDestroy() {
+        mDbHelper.close();
+        super.onDestroy();
+    }
+
 }
 
 

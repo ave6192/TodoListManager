@@ -35,6 +35,10 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
         public TextView mTextView;
         public CheckBox mCheckBox;
         public CardView mCardView;
+//        public FeedReaderDbHelper mDbHelper;
+
+
+
 
         public ViewHolder(View v) {
             super(v);
@@ -43,6 +47,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             mCardView = (CardView)v.findViewById(R.id.cardView);
             layout = (RelativeLayout)v.findViewById(R.id.inner_layout);
             context = v.getContext();
+//            mDbHelper = new FeedReaderDbHelper(v.getContext());
 
             v.setOnCreateContextMenuListener(this);
         }

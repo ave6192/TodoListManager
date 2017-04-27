@@ -1,7 +1,9 @@
 package com.example.ex2;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -40,6 +42,18 @@ public class MyDialog extends DialogFragment {
                 MainActivity main_act = ((MainActivity) getActivity());
                 String todo = insert_Text.getText().toString();
                 String date = insert_Date.getText().toString();
+
+                // Gets the data repository in write mode
+                SQLiteDatabase db = main_act.mDbHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+                ContentValues values = new ContentValues();
+                values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, todo+ " \n\n"+date);
+                values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, "");
+
+// Insert the new row, returning the primary key value of the new row
+                long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, values);
+
                 if(todo.length() > 0)
                     main_act.mAdapter.add(todo+ " \n\n"+date);
             }
